@@ -27,10 +27,28 @@ struct XmlData
     }
 };
 
-int main()
+std::string CreateXmlData()
 {
-    std::cout << "Hello World!\n";
+#if 1
+    std::stringstream ss;
+    ss << "<?xml version=\"1.0\" encoding=\"utf-8\"?>" << std::endl;
+    ss << "<root>" << std::endl;
+    ss << "    <int_value>1234</int_value>" << std::endl;
+    ss << "    <double_value>3.141596</double_value>" << std::endl;
+    ss << "    <string_value>Test</string_value>" << std::endl;
+    ss << "    <int_array>" << std::endl;
+    ss << "        <item>1</item>" << std::endl;
+    ss << "        <item>2</item>" << std::endl;
+    ss << "        <item>3</item>" << std::endl;
+    ss << "        <item>4</item>" << std::endl;
+    ss << "    </int_array>" << std::endl;
+    ss << "</root>" << std::endl;
 
+    std::string xml_data = ss.str();
+
+    return ss.str();
+
+#else
     auto file_name = "test.xml";
 
     std::ifstream ifs(file_name);
@@ -44,13 +62,20 @@ int main()
 
     std::string xml_data((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
 
+    return xml_data;
+#endif
+}
+
+int main()
+{
+    auto xml_data = CreateXmlData();
+
     std::cout << "[Input XML]" << std::endl;
     std::cout << xml_data << std::endl;
 
     xml::XMLDocument xml;
 
     xml.Parse(xml_data.c_str());
-    //xml.LoadFile(file_name);
 
     XmlData data;
     char* e = nullptr;
